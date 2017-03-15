@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+
+# gradle
+.gradle/
+
+# intellij
+.idea/
+target/
+build/
+out/
+*.iml
+*.ipr
+*.iws
+
+# other
+sample/

@@ -1,0 +1,54 @@
+if (Boolean.valueOf(release) == false) {
+    version = version + '-SNAPSHOT'
+}
+group 'com.github.newnewcoder'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.7"
+    }
+}
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    testCompile 'junit:junit:4.11'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin'
+    vcsUrl = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin'
+    tags = ['jboss eap 6.4', 'deploy', 'curl', 'json api']
+    description = 'It\'s a gradle plugin using curl to process jboss json api to deploy single war.'
+
+    plugins {
+        jbossEapDeployPlugin {
+            id = "com.github.newnewcoder.jboss-curl-gradle-plugin"
+            displayName = 'Gradle Jboss curl deploy plugin'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4'
+}
