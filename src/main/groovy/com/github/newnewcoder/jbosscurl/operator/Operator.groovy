@@ -1,5 +1,13 @@
 package com.github.newnewcoder.jbosscurl.operator
 
+import org.apache.http.HttpEntity
+import org.apache.http.HttpHost
+import org.apache.http.client.fluent.Executor
+import org.apache.http.client.fluent.Request
+import org.apache.http.entity.ContentType
+import org.apache.http.entity.mime.HttpMultipartMode
+import org.apache.http.entity.mime.MultipartEntityBuilder
+
 abstract class Operator {
     File war
     JbossClient jc
@@ -11,16 +19,13 @@ abstract class Operator {
         this.debug = debug
     }
 
-    def execute(String command) {
+    def execute(Request request) {
         String response
         if (!debug) {
-            println "[Info] Process command..."
-            def proc = command.execute()
-            proc.waitFor()
-            println "[Info] Exit value: ${proc.exitValue()}"
-            response = proc.text
+            Executor executor = Executor.newInstance().auth(new HttpHost(jc.host), jc.user, jc.password)
+            response = executor.execute(request).returnContent().asString()
         } else {
-            println "[Debug] Just print...\r\n>${command}"
+            println "[Debug] Just print...\r\n>${request.toString()}\r\n${this.toString()}\r\n"
             response = "{\"outcome\" : \"success\", \"result\" : { \"BYTES_VALUE\" : \"This is test value\" }}"
         }
         println "[Info] Response: \r\n${response}"
@@ -36,6 +41,13 @@ abstract class Operator {
     }
 
     abstract process()
+
+    @Override
+    String toString(){
+"""
+    JBoss Connection Info:${jc.toString()}
+    War: ${war.toString()}"""
+    }
 }
 
 abstract class SimpleOperator extends Operator {
@@ -47,8 +59,8 @@ abstract class SimpleOperator extends Operator {
     }
 
     def process() {
-        String command = "curl --digest -u ${jc.user}:${jc.password} -L -D - ${jc.managementUrl} --header Content-Type:application/json -d ${groovy.json.JsonOutput.toJson(attr)}"
-        execute(command)
+        Request request = Request.Post(jc.managementUrl).bodyByteArray(groovy.json.JsonOutput.toJson(attr).getBytes('utf-8'), ContentType.APPLICATION_JSON)
+        execute(request)
     }
 }
 
@@ -74,8 +86,9 @@ class AddOperator extends SingleWarOperator {
     }
 
     def process() {
-        def command = "curl --digest -u ${jc.user}:${jc.password} --form file=@${war.getAbsolutePath()} ${jc.uploadUrl}"
-        def uploadedResp = execute(command)
+        HttpEntity entity = MultipartEntityBuilder.create().setMode(HttpMultipartMode.BROWSER_COMPATIBLE).addBinaryBody(war.name, war).build()
+        Request request = Request.Post(jc.uploadUrl).body(entity)
+        def uploadedResp = execute(request)
         def uploadedKey = uploadedResp.result
         attr << [content: [[hash: uploadedKey]], operation: "add", enabled: "${enable}"]
         super.process()
@@ -124,4 +137,12 @@ class JbossClient {
         "http://${host}:${port}/management"
     }
 
+    @Override
+    String toString(){
+"""
+        Host: ${host}
+        Port: ${port}
+        User: ${user}
+        Password: ${password}"""
+    }
 }

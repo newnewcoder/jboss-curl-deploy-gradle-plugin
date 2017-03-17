@@ -16,14 +16,23 @@ buildscript {
 apply plugin: "com.gradle.plugin-publish"
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    httpclientVersion = '4.5.3'
+}
+
 dependencies {
     compile gradleApi()
     compile localGroovy()
+    compile "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    compile "org.apache.httpcomponents:fluent-hc:${httpclientVersion}"
+    compile "org.apache.httpcomponents:httpmime:${httpclientVersion}"
+
     testCompile 'junit:junit:4.11'
 }
 
@@ -51,4 +60,13 @@ pluginBundle {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.4'
+}
+
+apply plugin: 'application'
+mainClassName = 'com.github.newnewcoder.jbosscurl.operator.TestHttpclient'
+
+task execute(type:JavaExec) {
+    main = mainClassName
+    args = []
+    classpath = sourceSets.main.runtimeClasspath
 }

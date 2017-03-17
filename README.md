@@ -4,7 +4,7 @@
 
 Gradle plugin that deploys application (single war) to JBoss EAP server.
 
-Using curl to call HTTP management API from JBoss EAP server. So you need to install `curl`.
+Using ~~curl to call~~ HTTP management API from JBoss EAP server. ~~So you need to install `curl`.~~
 
 This plugin provides following tasks:
 
@@ -36,7 +36,7 @@ buildscript {
         maven {url "https://plugins.gradle.org/m2/"}
     }
     dependencies {
-        classpath 'gradle.plugin.com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.0-SNAPSHOT'
+        classpath 'gradle.plugin.com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1-SNAPSHOT'
     }
 }
 apply plugin: 'com.github.newnewcoder.jbosseap64-simple-deploy'
@@ -51,7 +51,7 @@ jboss {
     password = '<password>'
     warName = '<war file name that will be deploy>'
     warPath = '<war file path>'
-    debug = false //set to true for debug mode, that just print curl command.
+    debug = false //set to true for debug mode, that just print Request object's properties.
 }
 ~~~
 
