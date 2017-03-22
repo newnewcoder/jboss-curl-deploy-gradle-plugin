@@ -39,7 +39,7 @@ buildscript {
         classpath 'gradle.plugin.com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1-SNAPSHOT'
     }
 }
-apply plugin: 'com.github.newnewcoder.jbosseap64-simple-deploy'
+apply plugin: 'com.github.newnewcoder.jboss-curl-gradle-plugin'
 ~~~
 
 Fill in `jboss` block with JBoss console connection info:
