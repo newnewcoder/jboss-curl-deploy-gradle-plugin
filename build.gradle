@@ -5,17 +5,16 @@ group 'com.github.newnewcoder'
 
 buildscript {
     repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        jcenter()
     }
     dependencies {
-        classpath "com.gradle.publish:plugin-publish-plugin:0.9.7"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
-apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'idea'
 
 repositories {
@@ -23,10 +22,12 @@ repositories {
 }
 
 ext {
-    httpclientVersion = '4.5.3'
+    archivesBaseName = 'jboss-curl-gradle.plugin'
+    description = 'It\'s a gradle plugin process jboss json api to deploy single war.'
 }
 
 dependencies {
+    def httpclientVersion = '4.5.3'
     compile gradleApi()
     compile localGroovy()
     compile "org.apache.httpcomponents:httpclient:${httpclientVersion}"
@@ -36,24 +37,34 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('../repo'))
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId = project.group
+            artifactId = project.archivesBaseName
+            version = project.version
         }
     }
 }
 
-pluginBundle {
-    website = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin'
-    vcsUrl = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin'
-    tags = ['jboss eap 6.4', 'deploy', 'curl', 'json api']
-    description = 'It\'s a gradle plugin using curl to process jboss json api to deploy single war.'
-
-    plugins {
-        jbossEapDeployPlugin {
-            id = "com.github.newnewcoder.jboss-curl-gradle-plugin"
-            displayName = 'Gradle Jboss curl deploy plugin'
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['MyPublication']
+    pkg {
+        repo = 'generic'
+        name = 'jboss-curl-gradle-plugin'
+        userOrg = user
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin.git'
+        labels = ['JBossEAP', 'JBossWildly', 'deploy', 'gradle plugin']
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            desc = project.description
+            released = new Date()
         }
     }
 }
@@ -65,7 +76,7 @@ task wrapper(type: Wrapper) {
 apply plugin: 'application'
 mainClassName = 'com.github.newnewcoder.jbosscurl.operator.TestHttpclient'
 
-task execute(type:JavaExec) {
+task execute(type: JavaExec) {
     main = mainClassName
     args = []
     classpath = sourceSets.main.runtimeClasspath

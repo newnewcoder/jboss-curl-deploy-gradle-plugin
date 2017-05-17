@@ -32,11 +32,9 @@ In `build.gradle`
 First, setting `buildscript` block as below:
 ~~~groovy
 buildscript {
-    repositories {
-        maven {url "https://plugins.gradle.org/m2/"}
-    }
+    jcenter()
     dependencies {
-        classpath 'gradle.plugin.com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1-SNAPSHOT'
+        classpath 'com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1'
     }
 }
 apply plugin: 'com.github.newnewcoder.jboss-curl-gradle-plugin'
