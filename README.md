@@ -1,6 +1,8 @@
 # JBoss EAP(v6.4) gradle plugin
 
-![build-status](https://travis-ci.org/newnewcoder/jboss-curl-gradle-plugin.svg?branch=master)
+![travis-ci](https://travis-ci.org/newnewcoder/jboss-curl-gradle-plugin.svg?branch=master)
+[![license](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![download](https://api.bintray.com/packages/newnewcoder/generic/jboss-curl-gradle-plugin/images/download.svg) ](https://bintray.com/newnewcoder/generic/jboss-curl-gradle-plugin/_latestVersion)
 
 Gradle plugin that deploys application (single war) to JBoss EAP server.
 
