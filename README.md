@@ -34,7 +34,9 @@ In `build.gradle`
 First, setting `buildscript` block as below:
 ~~~groovy
 buildscript {
-    jcenter()
+    repositories{
+        jcenter()
+    }
     dependencies {
         classpath 'com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1'
     }
