@@ -26,6 +26,15 @@ ext {
     description = 'It\'s a gradle plugin process jboss json api to deploy single war.'
 }
 
+task sourceJar(type: Jar, dependsOn: classes, description: 'Package source into jar') {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourceJar
+}
+
 dependencies {
     def httpclientVersion = '4.5.3'
     compile gradleApi()
