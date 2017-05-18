@@ -22,7 +22,7 @@ repositories {
 }
 
 ext {
-    archivesBaseName = 'jboss-curl-gradle.plugin'
+    archivesBaseName = 'jboss-curl-gradle-plugin'
     description = 'It\'s a gradle plugin process jboss json api to deploy single war.'
 }
 
@@ -31,8 +31,13 @@ task sourceJar(type: Jar, dependsOn: classes, description: 'Package source into 
     from sourceSets.main.allSource
 }
 
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'groovydoc'
+    from groovydoc.destinationDir
+}
+
 artifacts {
-    archives sourceJar
+    archives sourceJar, groovydocJar
 }
 
 dependencies {
@@ -53,7 +58,10 @@ publishing {
             groupId = project.group
             artifactId = project.archivesBaseName
             version = project.version
+            artifact sourceJar
+            artifact groovydocJar
         }
+
     }
 }
 
