@@ -22,7 +22,7 @@ repositories {
 }
 
 ext {
-    archivesBaseName = 'jboss-curl-gradle-plugin'
+    archivesBaseName = 'jboss-curl-deploy-gradle-plugin'
     description = 'It\'s a gradle plugin process jboss json api to deploy single war.'
 }
 
@@ -71,10 +71,10 @@ bintray {
     publications = ['MyPublication']
     pkg {
         repo = 'generic'
-        name = 'jboss-curl-gradle-plugin'
+        name = 'jboss-curl-deploy-gradle-plugin'
         userOrg = user
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/newnewcoder/jboss-curl-gradle-plugin.git'
+        vcsUrl = 'https://github.com/newnewcoder/jboss-curl-deploy-gradle-plugin.git'
         labels = ['JBossEAP', 'JBossWildly', 'deploy', 'gradle plugin']
         publish = true
         publicDownloadNumbers = true

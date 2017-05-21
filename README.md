@@ -1,8 +1,8 @@
 # JBoss EAP(v6.4) gradle plugin
 
-![travis-ci](https://travis-ci.org/newnewcoder/jboss-curl-gradle-plugin.svg?branch=master)
+![travis-ci](https://travis-ci.org/newnewcoder/jboss-curl-deploy-gradle-plugin.svg?branch=master)
 [![license](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![download](https://api.bintray.com/packages/newnewcoder/generic/jboss-curl-gradle-plugin/images/download.svg) ](https://bintray.com/newnewcoder/generic/jboss-curl-gradle-plugin/_latestVersion)
+[![download](https://api.bintray.com/packages/newnewcoder/generic/jboss-curl-deploy-gradle-plugin/images/download.svg) ](https://bintray.com/newnewcoder/generic/jboss-curl-deploy-gradle-plugin/_latestVersion)
 
 Gradle plugin that deploys application (single war) to JBoss EAP server.
 
@@ -38,10 +38,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.newnewcoder:jboss-curl-gradle-plugin:1.0.1'
+        classpath 'com.github.newnewcoder:jboss-curl-deploy-gradle-plugin:1.0.0'
     }
 }
-apply plugin: 'com.github.newnewcoder.jboss-curl-gradle-plugin'
+apply plugin: 'com.github.newnewcoder.jboss-curl-deploy-gradle-plugin'
 ~~~
 
 Fill in `jboss` block with JBoss console connection info:
