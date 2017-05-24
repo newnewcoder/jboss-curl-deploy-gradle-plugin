@@ -63,10 +63,10 @@ class SimpleJbossDeployTask extends DefaultTask {
     Operator operator
     @TaskAction
     void run() {
-        if(!("curl --version".execute().text.startsWith("curl"))){
-            println "[Warn] curl must be installed.\r\nmore info: https://curl.haxx.se/"
-            return
-        }
+//        if(!("curl --version".execute().text.startsWith("curl"))){
+//            println "[Warn] curl must be installed.\r\nmore info: https://curl.haxx.se/"
+//            return
+//        }
         operator.run()
     }
 }
