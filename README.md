@@ -28,7 +28,7 @@ This plugin provides following tasks:
     6. status: 
        print the JBoss EAP server status
 
-    6. show: 
+    7. show: 
        print the deployments
 
 ## How to use
