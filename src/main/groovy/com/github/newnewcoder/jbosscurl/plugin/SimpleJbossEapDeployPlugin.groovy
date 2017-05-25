@@ -20,7 +20,8 @@ class SimpleJbossEapDeployPlugin implements Plugin<Project> {
          ["deploy", "Add war to jboss and enable it."],
          ["disable", "Disable war from jboss."],
          ["enable", "Enable war from jboss."],
-         ["status", "Print jboss server status."]].each { task, desc ->
+         ["status", "Print jboss server status."],
+         ["show", "Show deployments."]].each { task, desc ->
             project.task(task, type: SimpleJbossDeployTask) {
                 description = desc
             }
@@ -51,6 +52,9 @@ class SimpleJbossEapDeployPlugin implements Plugin<Project> {
                     case 'status':
                         task.operator = new StateOperator(war, jc, debug)
                         break
+                    case 'show':
+                        task.operator = new ShowOperator(war, jc, debug)
+                        break
                     default:
                         break //TODO
                 }
@@ -61,12 +65,9 @@ class SimpleJbossEapDeployPlugin implements Plugin<Project> {
 
 class SimpleJbossDeployTask extends DefaultTask {
     Operator operator
+
     @TaskAction
     void run() {
-//        if(!("curl --version".execute().text.startsWith("curl"))){
-//            println "[Warn] curl must be installed.\r\nmore info: https://curl.haxx.se/"
-//            return
-//        }
         operator.run()
     }
 }

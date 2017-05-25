@@ -43,8 +43,8 @@ abstract class Operator {
     abstract process()
 
     @Override
-    String toString(){
-"""
+    String toString() {
+        """
     JBoss Connection Info:${jc.toString()}
     War: ${war.toString()}"""
     }
@@ -68,6 +68,27 @@ class StateOperator extends SimpleOperator {
     StateOperator(File war, JbossClient jc, boolean debug) {
         super(war, jc, debug)
         attr << [operation: "read-attribute", name: "server-state"]
+    }
+}
+
+class ShowOperator extends SimpleOperator {
+    ShowOperator(File war, JbossClient jc, boolean debug) {
+        super(war, jc, debug)
+    }
+
+    def process() {
+        def response = execute(Request.Get(jc.managementUrl))
+        def json = new groovy.json.JsonSlurper().parseText("{\"outcome\" : \"success\"}")
+        json << [deployments: response.deployment.collect { k, v -> k }]
+        println "[Info] Response: \r\n${json}"
+        json
+    }
+
+    def execute(Request request) {
+        def response
+        Executor executor = Executor.newInstance().auth(new HttpHost(jc.host), jc.user, jc.password)
+        response = executor.execute(request).returnContent().asString()
+        new groovy.json.JsonSlurper().parseText(response)
     }
 }
 
@@ -138,8 +159,8 @@ class JbossClient {
     }
 
     @Override
-    String toString(){
-"""
+    String toString() {
+        """
         Host: ${host}
         Port: ${port}
         User: ${user}
