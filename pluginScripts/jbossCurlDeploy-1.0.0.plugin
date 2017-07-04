@@ -1,0 +1,12 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.github.newnewcoder:jboss-curl-deploy-gradle-plugin:1.0.0'
+  }
+}
+
+if (!project.plugins.findPlugin(com.github.newnewcoder.jbosscurl.plugin.SimpleJbossEapDeployPlugin))
+  project.apply(plugin: com.github.newnewcoder.jbosscurl.plugin.SimpleJbossEapDeployPlugin)

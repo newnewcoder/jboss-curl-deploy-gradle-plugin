@@ -28,23 +28,15 @@ This plugin provides following tasks:
     6. status: 
        print the JBoss EAP server status
 
-    7. show: 
+    7. show: #since v1.0.2
        print the deployments
 
 ## How to use
 In `build.gradle`
 
-First, setting `buildscript` block as below:
+First, apply plugin using url as below:
 ~~~groovy
-buildscript {
-    repositories{
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.newnewcoder:jboss-curl-deploy-gradle-plugin:1.0.0'
-    }
-}
-apply plugin: 'com.github.newnewcoder.jboss-curl-deploy-gradle-plugin'
+apply from: 'https://raw.githubusercontent.com/newnewcoder/jboss-curl-deploy-gradle-plugin/master/pluginScripts/jbossCurlDeploy.plugin'
 ~~~
 
 Fill in `jboss` block with JBoss console connection info:
